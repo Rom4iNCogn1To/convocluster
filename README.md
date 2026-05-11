@@ -1,7 +1,7 @@
 # convocluster
 
 ## State Of The Art
-- CLUSTERLLM: Large Language Models as a Guide for Text Clustering (November 2023)
+- CLUSTERLLM: Large Language Models as a Guide for Text Clustering (Nov 2023)
 - InBedder — "Answer is All You Need: Instruction-following Text Embedding" (Feb 2024)
 - ITGC — Interpretable Text-Guided Image Clustering via Iterative Search (June 2025)
 
