@@ -5,10 +5,10 @@ Recent work on LLM-guided clustering (ClusterLLM, ITGC, InBedder) shows that nat
 **Does conversational refinement using a structured operation vocabulary converge to a hidden target clustering more efficiently than one-shot LLM clustering — and does this advantage depend on whether the target aligns with or conflicts with the embedding's default similarity structure?**
 
 *Sub-questions*
-RQ1 (efficiency): Does the conversational system reach a given ARI threshold in fewer turns than iterated one-shot prompting?
-RQ2 (ceiling): Does the conversational system reach a higher final ARI than the one-shot baseline?
-RQ3 (the interesting one — bias overriding): How does the conversation-vs-baseline gap change as the target shifts from aligned-with-embedding (topic) to conflicting-with-embedding (methodology, object scale)?
-RQ4 (stability): Is the converged clustering stable across runs and across resampling of the corpus?
+- Q1 (efficiency): Does the conversational system reach a given ARI threshold in fewer turns than iterated one-shot prompting?
+- Q2 (ceiling): Does the conversational system reach a higher final ARI than the one-shot baseline?
+- Q3 (the interesting one — bias overriding): How does the conversation-vs-baseline gap change as the target shifts from aligned-with-embedding (topic) to conflicting-with-embedding (methodology, object scale)?
+- Q4 (stability): Is the converged clustering stable across runs and across resampling of the corpus?
 
 ## Other questions
 - What does the conversation actually do — what's the mechanism?
