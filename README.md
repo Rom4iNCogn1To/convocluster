@@ -1,7 +1,7 @@
 # convocluster
 
 Recent work on LLM-guided clustering (ClusterLLM, ITGC, InBedder) shows that natural-language guidance can steer clustering toward user-specified criteria. However, evaluation has primarily focused on cases where the target clustering aligns with the embedding's default similarity structure. We study the regime where the user's target conflicts with embedding defaults, using astro-ph abstracts where sentence-transformer embeddings encode multiple axes simultaneously (topic, methodology, object scale). We measure how interactive feedback turns translate into ARI improvement against hidden targets at varying degrees of conflict with embedding defaults.
-
+## Question
 **Does conversational refinement using a structured operation vocabulary converge to a hidden target clustering more efficiently than one-shot LLM clustering — and does this advantage depend on whether the target aligns with or conflicts with the embedding's default similarity structure?**
 
 *Sub-questions*
