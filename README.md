@@ -41,6 +41,8 @@ A small human study at the end. Do real humans converge similarly to the simulat
 
 **Why is "clustering" an ill-defined problem until you specify the user's intent — and what does that imply for how clustering systems should be designed and evaluated?**
 
+Existing LLM-guided clustering systems (ClusterLLM, ITGC, InBedder) demonstrate that natural-language guidance can steer clustering toward user intent. They primarily evaluate against benchmarks where the desired clustering aligns with what the underlying embedding already encodes (e.g., topic labels in standard text benchmarks). What they do not measure is whether the structure of the interaction — single-shot vs multi-turn reactive feedback — matters, and whether this depends on how much the user's target conflicts with the embedding's defaults. This project addresses that gap.
+
 ## State Of The Art
 - CLUSTERLLM: Large Language Models as a Guide for Text Clustering (Nov 2023)
 - InBedder — "Answer is All You Need: Instruction-following Text Embedding" (Feb 2024)
