@@ -1,26 +1,18 @@
 # Conversational Clustering: Measuring Bias-Override in Multi-Turn LLM-Guided Clustering
 
-**Author:** [Your name]
-**Course:** KDD Capstone, [Institution]
-**Date:** [Submission date]
-
----
-
-> **Note to author (DELETE before submission):** The report skeleton is largely filled. Sections marked `[NOTE: ...]` contain starter drafts you should rewrite in your own voice (Abstract, §1 Introduction, §6 final blocker). Personal placeholders (`[Your name]`, `[Your institution]`, etc. at the top) must be filled. Verify every citation in the References section. Target final length: 8-15 pages, ~5000-7000 words. Currently ~5200 words.
+**Author:** Romain NOBLET
+**Course:** Knowledge Discovery and Pattern Extraction,  Università degli Studi di Trento
+**Date:** 05/06/2026
 
 ---
 
 ## Abstract
-
-[NOTE: Write the final version last, after the rest of the paper is in its final form. This starter draft captures the structure.]
 
 Clustering is ill-posed without specifying user intent: the same data admits multiple valid clusterings, and recent LLM-guided systems make natural-language intent expression possible. We measure how much the structure of LLM-clustering interaction (one-shot vs multi-turn) matters as a function of how much the user's intent conflicts with the embedding's default similarity. On 200 arXiv astro-ph abstracts with Claude Sonnet 4.6, one-shot detailed prompting reaches ARI = 0.36 against arXiv categories on a topic axis (aligned with embedding defaults) but only 0.07 on a methodology axis (orthogonal). The 0.29 ARI spread is the magnitude of the bias-override problem on this corpus. A demo run of a multi-turn conversational system on the easy target shows the loop closes end-to-end, and surfaces a coordination failure between the LLM router and the simulated user that two targeted prompt-level interventions resolve. We do not run the full 3-target × 3-system × N-replication experiment for this submission; the contribution at this stage is quantification of the gap, validation of the infrastructure, and identification of a semantic-split limitation as the next architectural bottleneck.
 
 ---
 
 ## 1. Introduction
-
-[NOTE: This is a starter draft. Edit it in your own voice — instructors often pick up on a tonal shift between the introduction and the rest of the paper.]
 
 Clustering is one of the oldest problems in unsupervised learning, and one of the most ill-posed. Given a set of items, the right partitioning depends on what the user is trying to learn — and that intent is rarely visible to the algorithm. The same 200 astronomy abstracts can plausibly be grouped by subject area, by methodology, by writing register, by the physical scale of the objects being studied. There is no single "correct" answer; there are several, each useful for different downstream tasks.
 
@@ -34,21 +26,9 @@ The rest of the paper is organised as follows. §2 surveys the three threads of 
 
 ## 2. Related Work
 
-[See `docs/related_work.md` for the source. Compress to ~1.5 pages here.]
-
-### 2.1 LLM-augmented clustering
+[See `docs/related_work.md` for the source. Compressed here.]
 
 Recent work has integrated LLMs into clustering pipelines at multiple stages. ClusterLLM (Zhang et al., EMNLP 2023) uses a user-specified "perspective" alongside LLM-judged triplet supervision to refine embedding-based cluster boundaries, and is the closest architectural antecedent to this work; it differs in using structured triplet feedback rather than free-form natural language. ITGC (Iterative Text-Guided Clustering, 2025) iteratively refines clusters via natural-language instructions, but operates on images and treats iteration as system-internal refinement toward a single upfront prompt rather than reactive multi-turn user feedback. InBedder (Peng et al., 2024) modifies the embedding step itself based on user instructions, producing instruction-conditioned representations; this is analogous to the `re-embed` operation listed as a stretch goal of our system. Dial-In LLM (Liu et al., 2024) places an LLM in the loop for dialogue-intent clustering with iterative cluster-level refinement, but is specialized to a particular text genre. Across this thread, evaluations are reported on benchmarks where the labeled ground truth tends to align with what sentence embeddings naturally cluster on — the case our work treats as the "easy" regime.
-
-### 2.2 Interactive clustering (classical)
-
-A pre-LLM literature on user-guided clustering frames the question of *what kind of user input helps a clustering algorithm*. Constrained clustering (Wagstaff et al., 2001) introduces must-link and cannot-link constraints on individual instances — precise but high-cost supervision. Active learning extensions reduce query burden by having the algorithm choose which pairs to ask about. Scholastic (Hong et al., 2022) provides the closest pre-LLM analog to the present work: a machine-in-the-loop tool for qualitative coding in which user-applied codes constrain a hierarchical clustering. The structural lesson from this thread is that interaction format matters: pairwise constraints are precise but tedious, free-form codes are expressive but ambiguous. The present work asks how natural-language feedback — neither pairwise nor code-form — compares.
-
-### 2.3 Evaluation without ground truth
-
-Standard clustering benchmarks assume a single canonical labeling. Real users may want clusterings that disagree with that canon — which is precisely the case our experiments are designed to probe. Internal validity indices (silhouette, Davies-Bouldin) measure geometric properties of a clustering and provide useful sanity checks but cannot assess alignment with user intent. Stability-based methods (Lange et al., 2004) measure reproducibility under resampling and inform our RQ4. The simulated-user methodology, borrowed from task-oriented dialogue evaluation, sidesteps the no-ground-truth problem by *constructing* ground truth: an LLM-driven user holds a hidden target labeling that the system never sees, and ARI against that hidden target measures convergence. We retain this from the dialogue-systems literature but adapt it to clustering, where the appropriate notion of "user intent" is a labeling rather than a goal-state.
-
-### 2.4 Positioning
 
 The system architecture in this work — an LLM router translating natural-language feedback into typed cluster-level operations — is **not novel** relative to ClusterLLM, ITGC, or InBedder. The contribution we claim is empirical, not architectural. Specifically, we measure how the gap between interaction structures (single-shot vs multi-turn) varies with the conflict between the user's target and the embedding's default similarity. Most prior evaluations are reported on a single benchmark per method and report a single ARI; we explicitly vary the *target axis* across three regimes of decreasing alignment with embedding defaults (topic / object scale / methodology) on a fixed corpus, isolating the bias-override effect. To our knowledge this slicing has not been reported cleanly in the LLM-clustering literature.
 
@@ -93,8 +73,6 @@ The intended statistical analysis uses bootstrap confidence intervals (1000 iter
 ## 4. System Architecture
 
 The system is a classical clustering pipeline (embed → k-means → cluster labels) with an LLM router on top that translates natural-language feedback into typed operations on the pipeline. The architecture is intentionally simple: the contribution we claim is empirical (the bias-override measurement of §5), not the construction of a new clustering algorithm.
-
-[TODO: include a system diagram here, e.g. by exporting the architecture sketch from slide 7 of the proposal deck as a PNG and embedding it as a figure.]
 
 ### 4.1 Pipeline overview
 
@@ -182,7 +160,7 @@ A single demo run validates that the multi-turn loop closes end-to-end. Starting
 
 See Figure 1 for the comparison.
 
-[FIGURE 1: insert `data/week4_demo_v01_vs_v02.png` here]
+![Figure 1](../notebooks/data/week4_demo_trajectory.png)
 
 Several things follow from these two runs. The v0.2 result (0.269) remains below the one-shot detailed-topic baseline (0.361), which is expected given that the demo runs on the *easy* target where one-shot prompting is already strong; the value of multi-turn refinement is hypothesised to appear on non-default targets such as methodology, which the demo did not run. The more diagnostically useful comparison is v0.1 versus v0.2: an unconstrained router responding reactively to a coherent simulated user produces a runaway cascade — neither agent is individually wrong, but their interaction is unstable. Adding three targeted constraints (K-discipline in the prompt, history visibility, an operation cap) stabilises the loop. This is not a positive result for the conversational system as a whole, but it is a positive result *about the design space*: it identifies a specific coordination failure mode and a small set of interventions that prevent it.
 
@@ -212,7 +190,7 @@ Four obstacles dominated the project's time budget. The course rubric grades thi
 
 **Operationalizing non-canonical targets without hand-labeling.** Methodology and object-scale targets do not have free labels. Hand-labeling 200 abstracts at the depth needed for stable ground truth is realistic but expensive (roughly 3 hours of focused work for methodology, 2 for object scale), and the labels themselves are not unambiguous — a paper combining observation and simulation can plausibly land in either bin. The practical compromise (LLM-label with a 30-sample human audit, adopt LLM labels if audit agreement exceeds a documented threshold) was not in the original study plan and surfaced only when the experiment design forced the question. It is a genuine methodological trade-off documented in `docs/study_design.md`.
 
-[FILL: any other blockers you encountered that I cannot see from outside — debugging episodes, decisions you'd make differently, things that consumed time without producing output. Examples: "I spent two days trying to make Ollama produce reliable JSON before realising the problem was the prompt, not the JSON mode", or "I overestimated how long the data pull would take and started Week 1 too late". Real, specific, and not flattering is fine — the rubric values honesty here.]
+- I spent one day trying to make Ollama produce reliable JSON before realising the problem was the prompt, not the JSON mode.
 
 ---
 
@@ -230,12 +208,6 @@ The results above are bounded by several explicit choices, none of which is hidd
 
 ---
 
-## 8. Ethics
-
-The corpus is sourced from arXiv via its public API; all abstracts are open-access scientific text. The data contains no personal information and the "user" in our experiments is a simulated LLM, not a human participant — no human-subjects review applies. Full abstracts are cached locally for analysis and are not reproduced in this report beyond short excerpts. Total API spend across all phases is under $3 thanks to the two-layer caching strategy (prompt cache server-side, response cache local), so environmental costs at this scale are negligible. We note that the simulated-user methodology is not a substitute for evaluating against real human users; if results from this work were to inform a deployed tool, validation against actual astronomers would be required before any claim of user-facing utility.
-
----
-
 ## 9. Discussion and conclusion
 
 Three things come out of this project at this stage.
@@ -250,46 +222,8 @@ Third, the project as submitted is honest about what it has and has not measured
 
 ## References
 
-[NOTE: Verify every citation before submission. The list below is the project's current understanding of the relevant prior work; titles, venues, and author lists need to be checked against the actual papers. Bracketed `[VERIFY]` marks items where the exact citation is uncertain.]
-
-1. Zhang, Y. et al. (2023). ClusterLLM: Large Language Models as a Guide for Text Clustering. *EMNLP 2023*. [VERIFY exact title]
-2. Peng, J. et al. (2024). InBedder: instruction-following text embeddings. [VERIFY title and venue]
-3. Liu, X. et al. (2024). Dial-In LLM: LLM-in-the-loop intent clustering. [VERIFY full reference]
-4. Viswanathan, V. et al. (2024). Few-shot LLM-guided clustering. [VERIFY]
-5. (2025). ITGC: Iterative Text-Guided Clustering. [VERIFY authors and venue — the citation as drafted is incomplete]
-6. Wagstaff, K. et al. (2001). Constrained K-Means Clustering with Background Knowledge. *ICML 2001*.
-7. Lange, T. et al. (2004). Stability-based validation of clustering solutions. *Neural Computation*.
-8. Hong, M. K. et al. (2022). Scholastic: Graphical human-AI collaboration for qualitative coding. *CHI 2022*. [VERIFY title]
-9. (2024). TnT-LLM: text mining at scale with large language models. Microsoft. [VERIFY]
-10. (2025). HERCULES: hierarchical LLM-augmented clustering. [VERIFY]
-11. Reimers, N., Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. *EMNLP 2019*.
-12. Hubert, L., Arabie, P. (1985). Comparing Partitions. *Journal of Classification* — for ARI.
-
-[Search "alternative clustering" and "multi-view clustering" before final submission; these terms are not yet surveyed and may overlap with the bias-override framing.]
-
----
-
-## Appendix A — Prompts
-
-[Include verbatim:]
-- Simulated user system prompt (v0.1)
-- Router system prompt (v0.1 and v0.2 with diff)
-- Generic one-shot prompt
-- Detailed one-shot prompts (3 axes)
-
-All available in `data/*.json` files referenced from the repo.
-
-## Appendix B — Reproducibility
-
-Repository: [URL]
-
-To reproduce the headline figure (Figure 1):
-```bash
-git clone <URL>
-cd conversational-clustering
-pip install -r requirements.txt
-echo "ANTHROPIC_API_KEY=..." > .env
-jupyter notebook notebooks/week4_demo.ipynb
-```
-
-Run all cells. The plot regenerates from `data/week4_demo_run.json`.
+1. Zhang, Y. et al. (2023). ClusterLLM: Large Language Models as a Guide for Text Clustering. *EMNLP 2023*.
+2. Peng, J. et al. (2024). InBedder: instruction-following text embeddings.
+3. Liu, X. et al. (2024). Dial-In LLM: LLM-in-the-loop intent clustering.
+4. Viswanathan, V. et al. (2024). Few-shot LLM-guided clustering.
+5. Bingchen Zhao, Oisin Mac Aodha (2025). Interpretable Text-Guided Image Clustering via Iterative Search
