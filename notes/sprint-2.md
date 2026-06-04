@@ -1,4 +1,4 @@
-# Sprint 2 — [Your name]
+# Sprint 2 — Romain NOBLET
 
 ## What I did this sprint
 
@@ -23,8 +23,7 @@ Local llama3.2:3b: ARI ≈ 0.03. Justifies the model choice.
 
 ## What blocked me
 
-- Initially over-spent on prompt design (qwen2.5:3b OOM, llama3.2:3b followed JSON but didn't produce coherent clusters). Lost ~half a day before realizing the local-model phase was an end-of-pipeline validation, not the main path.
-- [FILL: anything else]
+- Initially over-spent on prompt design (qwen2.5:3b, llama3.2:3b followed JSON but didn't produce coherent clusters). Lost ~half a day before realizing the local-model phase was the wrong path.
 
 ## What I'm doing next
 
