@@ -1,0 +1,25 @@
+{
+  "target_axis": "methodology",
+  "starting_clustering": "generic",
+  "n_turns": 4,
+  "history": [
+    {
+      "turn_idx": 1,
+      "feedback": "The current clusters are organized by topic/subject matter, but your goal is to cluster by methodology. Reorganize all papers into four methodology-based groups: Observational (papers analyzing telescope/instrument data), Theoretical (analytical or first-principles work), Simulation (numerical simulations, N-body, hydrodynamics, etc.), and Instrumental/Methods (papers about instruments, pipelines, or statistical techniques). Right now every cluster mixes all four methodologies together \u2014 for example, \"Cosmology\" contains both simulation-based inference tools and observational constraints, which should be in separate methodology clusters."
+    },
+    {
+      "turn_idx": 2,
+      "feedback": "The clustering still groups papers by topic rather than methodology \u2014 all five clusters remain subject-area bins that mix observational, theoretical, simulation, and methods papers together. The reorganization I described last turn hasn't happened: for example, the \"Stars\" cluster contains both observational detections (telescope measurements of magnetic fields) and theoretical/analytical work (equations of state), which belong in separate methodology clusters. Please restructure into exactly four clusters based on *how* the research is done \u2014 Observational, Theoretical, Simulation, and Instrumental/Methods \u2014 ignoring what astronomical topic each paper covers."
+    },
+    {
+      "turn_idx": 3,
+      "feedback": "The clustering has not changed \u2014 it still organizes papers by astronomical topic rather than by research methodology. I need four clusters defined purely by *how* the work is done: (1) Observational papers that analyze telescope or instrument data, (2) Theoretical papers using analytical derivations or first-principles calculations, (3) Simulation papers running numerical codes (N-body, hydrodynamics, MHD, etc.), and (4) Instrumental/Methods papers focused on pipelines, statistical techniques, or new instruments. A paper about neutron star equations of state belongs with other theoretical papers, not with observational stellar detections; a paper running cosmological simulations belongs with other simulation papers, not with observational galaxy surveys. Please discard the topic-based structure entirely and recluster on methodology."
+    },
+    {
+      "turn_idx": 4,
+      "feedback": "The clustering remains entirely topic-based after three rounds of feedback. I need a fundamental restructuring: discard all five current clusters and rebuild exactly four clusters where every paper is assigned based solely on its primary research method \u2014 Observational, Theoretical, Simulation, or Instrumental/Methods. A gravitational-wave paper using analytical derivations belongs with theoretical cosmology and stellar theory papers; a galaxy survey paper belongs with observational stellar and planetary papers; a hydrodynamics simulation of AGN belongs with N-body and MHD simulation papers across all topics. The subject matter of a paper should have zero influence on its cluster assignment."
+    }
+  ],
+  "total_cost_usd": 0.021702,
+  "notes": "Dry-run with no system in the loop \u2014 clustering does not update between turns."
+}

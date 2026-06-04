@@ -1,52 +1,134 @@
-# convocluster
+# Conversational Clustering
 
-Recent work on LLM-guided clustering (ClusterLLM, ITGC, InBedder) shows that natural-language guidance can steer clustering toward user-specified criteria. However, evaluation has primarily focused on cases where the target clustering aligns with the embedding's default similarity structure. We study the regime where the user's target conflicts with embedding defaults, using astro-ph abstracts where sentence-transformer embeddings encode multiple axes simultaneously (topic, methodology, object scale). We measure how interactive feedback turns translate into ARI improvement against hidden targets at varying degrees of conflict with embedding defaults.
-## Question
-**Does conversational refinement using a structured operation vocabulary converge to a hidden target clustering more efficiently than one-shot LLM clustering — and does this advantage depend on whether the target aligns with or conflicts with the embedding's default similarity structure?**
+Solo capstone for the KDD course. We measure whether multi-turn natural-language feedback recovers hidden target clusterings better than one-shot prompting — and whether the advantage depends on whether the target conflicts with the embedding's default similarity structure.
 
-*Sub-questions*
-- Q1 (efficiency): Does the conversational system reach a given ARI threshold in fewer turns than iterated one-shot prompting?
-- Q2 (ceiling): Does the conversational system reach a higher final ARI than the one-shot baseline?
-- Q3 (the interesting one — bias overriding): How does the conversation-vs-baseline gap change as the target shifts from aligned-with-embedding (topic) to conflicting-with-embedding (methodology, object scale)?
-- Q4 (stability): Is the converged clustering stable across runs and across resampling of the corpus?
+**Status:** weeks 1–4 complete (baselines + demo). See `docs/study_plan.md` for the current version of the research questions.
 
-## Other questions
-- What does the conversation actually do — what's the mechanism?
-LLM-steers-classical-clustering. The conversation maps to operations on a k-means pipeline (split, merge, change_k, re-embed, ignore, move).
-- What operations should be in the vocabulary?
-Start with three: split, merge, change_k. Add re-embed and ignore if needed. Re-embed is the sharpest tool for the non-default-target experiment.
-- How do we evaluate without ground truth?
-Simulated user methodology. You (the experimenter) define a hidden target. A simulated LLM user is given that target and produces natural-language feedback toward it. The system never sees the target. ARI is computed between system output and target.
-- Where does the "truth" come from?
-From you, the experimenter. Three target types planned: topic (arXiv categories, free), object-scale (hand-labeled or LLM-labeled-with-audit), methodology (same). The targets aren't the truth, they're a truth — different user goals.
-- What does ARI = 0.32 mean?
-Moderate agreement beyond chance. Real signal, real disagreement. Goldilocks zone for the study — not trivial, not impossible.
-- What do embeddings actually do?
-Map text to points in 384-dim space such that semantic similarity ≈ geometric proximity. The notion of "similarity" baked in is a bias from training data, not a truth. Two abstracts on similar topics end up close; abstracts on different methodologies of similar topics might also end up close because the embedding doesn't natively distinguish methodology.
+---
 
-- Can a simulated LLM user produce feedback similar enough to a real human user that experimental conclusions transfer?
-- Which operations does the LLM choose to invoke given which kinds of feedback?
-- What does the LLM baseline actually see?
-Does it see all 200 abstracts? Titles only? Title + first sentence? Does it work over raw text or over cluster summaries?
-- How is the simulated user prompted?
-Critical methodological question. The simulated user's prompt determines the validity of your whole experiment. Too generic → bad feedback. Too specific → leaks the answer.
-- How many runs per condition for statistical power?
-You'll do a small power analysis. Likely 10–20 runs per (system × target) cell.
-- How do you detect convergence?
-When does the simulated user stop giving feedback? After N turns? When ARI changes < ε? When the user-LLM says it's satisfied?
-- What multiple-comparison correction will you apply?
-With multiple targets, multiple metrics, and multiple turn cutoffs, you'll be running many tests. Bonferroni? Holm? Benjamini-Hochberg?
-- How do you validate the simulated user?
-A small human study at the end. Do real humans converge similarly to the simulated user? This is the validity check that the whole methodology depends on.
+## Headline result so far
 
-**Why is "clustering" an ill-defined problem until you specify the user's intent — and what does that imply for how clustering systems should be designed and evaluated?**
+On arXiv astro-ph abstracts (n=200), Claude one-shot baselines achieve:
 
-Existing LLM-guided clustering systems (ClusterLLM, ITGC, InBedder) demonstrate that natural-language guidance can steer clustering toward user intent. They primarily evaluate against benchmarks where the desired clustering aligns with what the underlying embedding already encodes (e.g., topic labels in standard text benchmarks). What they do not measure is whether the structure of the interaction — single-shot vs multi-turn reactive feedback — matters, and whether this depends on how much the user's target conflicts with the embedding's defaults. This project addresses that gap.
+| Target | ARI vs reference labels | Notes |
+|--------|------|-------|
+| Topic (arXiv categories) | **0.361** | Aligned with embedding defaults |
+| Object scale | 0.264 | Partial alignment |
+| Methodology | **0.071** | Conflicts with embedding defaults |
 
-## State Of The Art
-- CLUSTERLLM: Large Language Models as a Guide for Text Clustering (Nov 2023)
-- InBedder — "Answer is All You Need: Instruction-following Text Embedding" (Feb 2024)
-- ITGC — Interpretable Text-Guided Image Clustering via Iterative Search (June 2025)
+Spread topic→methodology = **0.29 ARI**: the gap that multi-turn feedback should close.
 
-## Dataset
-https://arxiv.org/archive/astro-ph
+A demo run on the topic target shows the conversational loop closes end-to-end (v0.2 router: ARI 0.245 → 0.269 across 6 turns). The interesting case — methodology target — is the next experiment.
+
+---
+
+## Reproducing the experiments
+
+### Setup
+
+```bash
+git clone <repo-url>
+cd conversational-clustering
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+API key for Claude:
+
+```bash
+echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
+```
+
+A local Ollama install is optional and only needed to reproduce the Week 2 local experiment.
+
+### Run
+
+Notebooks are numbered in order of execution. Run them sequentially:
+
+```
+notebooks/week1_pull_and_embed.ipynb          # pull arXiv abstracts, embed, k-means
+notebooks/week2_cloud_baselines.ipynb         # Claude one-shot baselines (generic + 3 detailed axes)
+notebooks/week2_local_ollama.ipynb            # OPTIONAL: local model validation (showed 3B insufficient)
+notebooks/week3_simulated_user.ipynb          # build + validate the simulated user
+notebooks/week4_demo.ipynb                    # closes the loop, single demo run on topic target
+```
+
+Each notebook caches its outputs to `data/` and `cache_claude/`. Re-running a notebook after the first successful run is free (uses local response cache).
+
+### What gets produced
+
+- `data/astro_ph_abstracts.json` — 200 abstracts pulled from arXiv (cached so we don't re-pull)
+- `data/claude_baseline_*.json` — one-shot baseline assignments + labels + cost reports
+- `data/week3_simulated_user_dryrun.json` — dry-run conversation
+- `data/week4_demo_run.json` — full trajectory of the demo loop (assignments, ops, ARI per turn)
+- `data/week4_demo_v01_vs_v02.png` — comparison plot of the two router iterations
+- `data/week3_simulated_user_prompts_v01.json` — versioned prompt artifact
+
+### Headline figure
+
+`data/week4_demo_v01_vs_v02.png` is the figure shown in the presentation (slide 8 of the deck). It can be regenerated from `data/week4_demo_run.json` by running the plot cell at the end of `notebooks/week4_demo.ipynb`.
+
+---
+
+## Cost
+
+Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, thanks to two-layer caching (prompt cache server-side + response cache local). Local response cache means re-running cells costs $0 after the first successful run.
+
+---
+
+## Documents
+
+- `docs/study_plan.md` — research questions, current version of the hypotheses (versioned)
+- `docs/related_work.md` — survey of LLM-guided clustering literature (versioned)
+- `docs/study_design.md` — experimental design, operationalization of targets, evaluation strategy
+- `docs/report.md` — technical report (8-15 pages, the main writeup)
+- `notes/` — per-sprint notes (week-by-week)
+
+---
+
+## Repository layout
+
+```
+.
+├── README.md                          (this file)
+├── requirements.txt                   (Python dependencies)
+├── .env.example                       (template for API key — copy to .env)
+├── docs/
+│   ├── study_plan.md                  (versioned: v0.1, v0.2, ...)
+│   ├── related_work.md                (versioned)
+│   ├── study_design.md
+│   └── report.md                      (technical report)
+├── notebooks/
+│   ├── week1_pull_and_embed.ipynb
+│   ├── week2_cloud_baselines.ipynb
+│   ├── week2_local_ollama.ipynb       (optional)
+│   ├── week3_simulated_user.ipynb
+│   └── week4_demo.ipynb
+├── data/
+│   ├── astro_ph_abstracts.json
+│   ├── claude_baseline_*.json
+│   ├── week3_*.json
+│   ├── week4_demo_run.json
+│   └── week4_demo_v01_vs_v02.png
+├── cache_claude/                      (response cache, gitignored)
+├── cache_ollama/                      (local cache, gitignored)
+└── notes/
+    ├── sprint-1-<yourname>.md
+    ├── sprint-2-<yourname>.md
+    └── ...
+```
+
+---
+
+## Honest limitations (more in `docs/report.md`)
+
+- **Single demo run on the easy target.** No statistics, no confidence intervals. The full experiment (3 targets × 3 systems × ~15 runs) is the obvious next step.
+- **The `split` operation is geometric, not semantic.** When the router asks "split by methodology", k-means partitions by embedding geometry — which often doesn't correspond to the requested criterion. This is documented in the report's limitations section.
+- **No human-labeled ground truth.** Methodology and object_scale targets use Claude's own detailed-baseline assignments as proxy targets. Spot-checking against hand-labeling is future work.
+
+---
+
+## Contact
+
+[Your name], [Your institution], [Your email]
