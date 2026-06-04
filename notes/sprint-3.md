@@ -1,4 +1,4 @@
-# Sprint 3 — [Your name]
+# Sprint 3 — Romain NOBLET
 
 ## What I did this sprint
 
@@ -19,7 +19,6 @@ The simulated user works as designed. Across 4 turns:
 ## What blocked me
 
 - The temperature choice (0.4) is a guess. Lower would be more deterministic, higher more variable. I locked it for now; revisit if Week 4+ reveals issues.
-- [FILL: anything else]
 
 ## What I'm doing next
 
