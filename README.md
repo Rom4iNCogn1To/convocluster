@@ -109,7 +109,7 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 │   ├── claude_baseline_*.json
 │   ├── week3_*.json
 │   ├── week4_demo_run.json
-│   └── week4_demo_v01_vs_v02.png
+│   └── week4_demo_trajectory.png
 ├── cache_claude/                     
 ├── cache_ollama/                      
 └── notes/
