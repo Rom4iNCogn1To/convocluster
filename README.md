@@ -62,7 +62,6 @@ Each notebook caches its outputs to `data/` and `cache_claude/`. Re-running a no
 - `data/claude_baseline_*.json` — one-shot baseline assignments + labels + cost reports
 - `data/week3_simulated_user_dryrun.json` — dry-run conversation
 - `data/week4_demo_run.json` — full trajectory of the demo loop (assignments, ops, ARI per turn)
-- `data/week4_demo_v01_vs_v02.png` — comparison plot of the two router iterations
 - `data/week3_simulated_user_prompts_v01.json` — versioned prompt artifact
 
 ### Headline figure
@@ -82,7 +81,7 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 - `docs/study_plan.md` — research questions, current version of the hypotheses (versioned)
 - `docs/related_work.md` — survey of LLM-guided clustering literature (versioned)
 - `docs/study_design.md` — experimental design, operationalization of targets, evaluation strategy
-- `docs/report.md` — technical report (8-15 pages, the main writeup)
+- `docs/report.md` — technical report (the main writeup)
 - `notes/` — per-sprint notes (week-by-week)
 
 ---
