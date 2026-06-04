@@ -91,18 +91,17 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 
 ```
 .
-├── README.md                          (this file)
-├── requirements.txt                   (Python dependencies)
-├── .env.example                       (template for API key — copy to .env)
+├── README.md                          
+├── requirements.txt                   
 ├── docs/
-│   ├── study_plan.md                  (versioned: v0.1, v0.2, ...)
-│   ├── related_work.md                (versioned)
+│   ├── study_plan.md                  
+│   ├── related_work.md                
 │   ├── study_design.md
-│   └── report.md                      (technical report)
+│   └── report.md                      
 ├── notebooks/
 │   ├── week1_pull_and_embed.ipynb
 │   ├── week2_cloud_baselines.ipynb
-│   ├── week2_local_ollama.ipynb       (optional)
+│   ├── week2_local_ollama.ipynb
 │   ├── week3_simulated_user.ipynb
 │   └── week4_demo.ipynb
 ├── data/
@@ -111,11 +110,11 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 │   ├── week3_*.json
 │   ├── week4_demo_run.json
 │   └── week4_demo_v01_vs_v02.png
-├── cache_claude/                      (response cache, gitignored)
-├── cache_ollama/                      (local cache, gitignored)
+├── cache_claude/                     
+├── cache_ollama/                      
 └── notes/
-    ├── sprint-1-<yourname>.md
-    ├── sprint-2-<yourname>.md
+    ├── sprint-1.md
+    ├── sprint-2.md
     └── ...
 ```
 
@@ -131,4 +130,4 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 
 ## Contact
 
-[Your name], [Your institution], [Your email]
+Romain NOBLET, Università degli Studi di Trento
