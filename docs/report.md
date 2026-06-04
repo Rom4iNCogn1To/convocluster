@@ -26,7 +26,7 @@ The rest of the paper is organised as follows. §2 surveys the three threads of 
 
 ## 2. Related Work
 
-[See `docs/related_work.md` for the source. Compressed here.]
+[See `docs/related_work.md` for the source.]
 
 Recent work has integrated LLMs into clustering pipelines at multiple stages. ClusterLLM (Zhang et al., EMNLP 2023) uses a user-specified "perspective" alongside LLM-judged triplet supervision to refine embedding-based cluster boundaries, and is the closest architectural antecedent to this work; it differs in using structured triplet feedback rather than free-form natural language. ITGC (Iterative Text-Guided Clustering, 2025) iteratively refines clusters via natural-language instructions, but operates on images and treats iteration as system-internal refinement toward a single upfront prompt rather than reactive multi-turn user feedback. InBedder (Peng et al., 2024) modifies the embedding step itself based on user instructions, producing instruction-conditioned representations; this is analogous to the `re-embed` operation listed as a stretch goal of our system. Dial-In LLM (Liu et al., 2024) places an LLM in the loop for dialogue-intent clustering with iterative cluster-level refinement, but is specialized to a particular text genre. Across this thread, evaluations are reported on benchmarks where the labeled ground truth tends to align with what sentence embeddings naturally cluster on — the case our work treats as the "easy" regime.
 
@@ -36,7 +36,7 @@ The system architecture in this work — an LLM router translating natural-langu
 
 ## 3. Study Design
 
-[See `docs/study_design.md` for the long-form source. Compress to ~1 page.]
+[See `docs/study_design.md` for the long-form source.]
 
 ### 3.1 Hidden targets
 
