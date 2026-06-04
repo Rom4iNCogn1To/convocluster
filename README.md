@@ -130,4 +130,4 @@ Total API spend across all four notebooks is under **$3** on Claude Sonnet 4.6, 
 
 ## Contact
 
-Romain NOBLET, Università degli Studi di Trento
+Romain NOBLET, Università degli Studi di Trento, romainmathis.noblet@studenti.unitn.it
