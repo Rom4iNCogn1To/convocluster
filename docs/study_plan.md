@@ -49,7 +49,7 @@ The versioned record of what this project is trying to measure and how that has 
 ## Scope decisions
 
 - **Solo project.** Tight scope: one corpus (astro-ph), one model class (Sonnet 4.6), three targets, three systems.
-- **Dataset:** ~200 arXiv astro-ph abstracts, recent. Public API, no licensing or PII issues.
+- **Dataset:** ~200 arXiv astro-ph abstracts, recent. Public API.
 - **Targets, in increasing difficulty:**
   - **Easy:** topic (arXiv primary category labels — free)
   - **Hard:** object scale (planetary / stellar / galactic / cosmological)
@@ -58,35 +58,9 @@ The versioned record of what this project is trying to measure and how that has 
   - **A.** One-shot generic (no axis specified)
   - **B.** One-shot detailed (axis described upfront)
   - **C.** Multi-turn (this project's system)
-- **Evaluation metric:** ARI vs hidden target. Secondary: turns-to-threshold, final-ARI variance.
-- **Sample size & stats:** ~15 runs per (system × target) cell, bootstrap CIs, BH correction across the test family. (Power analysis to be done before launching the main experiment.)
-
----
-
-## Confirmatory vs exploratory
-
-Honest labeling, per the rubric:
-
-- **Confirmatory** (planned in advance):
-  - Spread of one-shot baselines across the three target axes
-  - Whether multi-turn ARI exceeds one-shot generic on methodology
-- **Exploratory** (will surface after running):
-  - Convergence trajectories shape
-  - Which operations the router selects most often
-  - Operation-mix differences across target axes
-
----
-
-## What this study plan does NOT yet commit to
-
-- Hand-labeling vs LLM-labeling of methodology / object-scale ground truth (decision pending; see study_design.md)
-- Multi-turn stopping criterion (currently fixed budget of 6 turns; satisfaction-based stopping is future work)
-- Cross-embedding robustness check (only `all-MiniLM-L6-v2` so far)
-
+- **Evaluation metric:** ARI vs hidden target.
 ---
 
 ## Honest framing of contribution
 
 The system architecture is **not novel** relative to ClusterLLM, ITGC, InBedder. The contribution is **empirical**: a measurement of how interaction structure (single-shot vs multi-turn) affects clustering quality when the target conflicts with embedding defaults.
-
-This framing is more defensible than "we built a new system" and matches what the literature has not yet measured cleanly.
