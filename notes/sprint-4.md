@@ -1,4 +1,4 @@
-# Sprint 4 — [Your name]
+# Sprint 4 — Romain NOBLET
 
 ## What I did this sprint
 
@@ -20,8 +20,7 @@
 
 ## What blocked me
 
-- The v0.1 → v0.2 iteration cost time that should have gone to the multi-target experiment. But the failure was diagnostic — it documented a real design tension between two LLM agents in a multi-turn loop. Worth the time.
-- [FILL: anything else]
+- The v0.1 → v0.2 iteration cost time that should have gone to the multi-target experiment. But the failure was diagnostic — it documented a real design tension between two LLM agents in a multi-turn loop.
 
 ## What I'm doing next
 
