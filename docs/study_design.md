@@ -79,49 +79,12 @@ Verification of these measures was performed in Week 3 dry-run. No paper IDs det
 
 ---
 
-## Statistical plan
-
-- **Bootstrap CIs** on all reported point estimates (ARI, turns-to-threshold). Bootstrap iterations = 1000, percentile method.
-- **Pairwise comparisons** between systems within each target use paired bootstrap (same target run with different systems).
-- **Multiple-comparison correction**: Benjamini-Hochberg across the family of tests = {(target × metric)}. Q = 0.05.
-- **Power thinking**: with ~15 runs per cell and bootstrap, we can reliably detect effect sizes of ~0.05 ARI between conditions. Smaller effects would require either more runs or a more sensitive paired analysis.
-
-### Confirmatory vs exploratory hypotheses
-
-Per the rubric:
-
-**Confirmatory (predicted before running):**
-- Multi-turn final ARI > one-shot generic final ARI, on methodology target. (Tested at q=0.05 with correction.)
-- Spread of one-shot baselines across the three targets is significantly different from zero.
-
-**Exploratory (post-hoc analysis):**
-- Convergence trajectory shape (monotonic vs oscillating)
-- Operation mix differences across targets
-- Cases where the demo system performs surprisingly badly or well
-
----
-
-## Reproducibility
-
-| Element | How it's reproducible |
-|---------|------------------------|
-| Random seeds | `RANDOM_SEED = 42` set at top of every notebook, used for k-means, sample selection, train/test splits |
-| Prompt versions | All LLM prompts saved as versioned JSON in `data/` |
-| LLM model | `claude-sonnet-4-6` specified explicitly |
-| Temperature | 0.0 for clustering baselines and router; 0.4 for simulated user (with rationale: realistic phrasing variation) |
-| Response cache | Per-prompt local cache means identical inputs produce identical outputs across re-runs |
-| Run logs | Every notebook saves its outputs as JSON to `data/` |
-
-**Headline result reproducibility statement:** clone the repo, run `notebooks/week2_cloud_baselines.ipynb` and `notebooks/week4_demo.ipynb` in order. The 0.36 / 0.07 / 0.245→0.269 numbers should reproduce exactly because temperature=0 plus cache. If they don't, something is broken.
-
----
-
 ## Data provenance & ethics
 
 - **Source**: arXiv.org via official API. Public, open-access papers.
 - **No PII**: abstracts are scientific text. No personal data.
 - **No copyrighted text reproduction**: full abstracts are stored locally for analysis but not reproduced beyond fair use (short excerpts in the report at most).
-- **No deception of human subjects**: the "user" is a simulated LLM, not a human participant. No IRB required.
+- **No deception of human subjects**: the "user" is a simulated LLM, not a human participant.
 - **Compute cost**: ~$3 total API spend across all phases. Local response cache prevents redundant calls.
 
 ---
