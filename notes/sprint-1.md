@@ -15,7 +15,8 @@ ARI of k-means clustering vs arXiv primary categories landed at 0.32. Not 0, not
 
 ## What blocked me
 
-- [FILL: anything that actually blocked you. Examples: API rate limits, embedding model download time, deciding between datasets, ...]
+- embedding model download time
+- deciding between datasets
 
 ## What I'm doing next
 
