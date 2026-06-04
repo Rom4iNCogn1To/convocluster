@@ -1,0 +1,1 @@
+{"response": "PAPER 96: cluster 1", "usage": {"input_tokens": 271, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "output_tokens": 11}, "model": "claude-sonnet-4-6", "cached": false, "duration_s": 7.936150312423706}

@@ -1,0 +1,1 @@
+{"response": "{\"assignments\": [\n  {\"paper_id\": 7, \"cluster\": 2},\n  {\"paper_id\": 10, \"cluster\": 3},\n  {\"paper_id\": 22, \"cluster\": 2}\n]}", "duration_s": 10.094171285629272, "cached": false, "model": "llama3.2:3b"}
