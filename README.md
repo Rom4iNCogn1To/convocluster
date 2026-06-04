@@ -1,6 +1,6 @@
 # Conversational Clustering
 
-Solo capstone for the KDD course. We measure whether multi-turn natural-language feedback recovers hidden target clusterings better than one-shot prompting — and whether the advantage depends on whether the target conflicts with the embedding's default similarity structure.
+We measure whether multi-turn natural-language feedback recovers hidden target clusterings better than one-shot prompting — and whether the advantage depends on whether the target conflicts with the embedding's default similarity structure.
 
 **Status:** weeks 1–4 complete (baselines + demo). See `docs/study_plan.md` for the current version of the research questions.
 
